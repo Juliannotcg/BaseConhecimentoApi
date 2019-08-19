@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BaseConhecimentoApi.Api\BaseConhecimentoApi.Api.csproj" />
+    <ProjectReference Include="..\BaseConhecimentoApi.Domain\BaseConhecimentoApi.Domain.csproj" />
+    <ProjectReference Include="..\BaseConhecimentoApi.Infra\BaseConhecimentoApi.Infra.csproj" />
+  </ItemGroup>
+
+</Project>
