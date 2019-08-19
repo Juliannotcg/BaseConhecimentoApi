@@ -23,7 +23,8 @@ namespace BaseConhecimentoApi.Infra.Repository
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _context.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         public void Remove(Guid id)
