@@ -18,7 +18,7 @@ namespace BaseConhecimentoApi.Infra.Repository
 
         public void Add(Orgao obj)
         {
-            throw new NotImplementedException();
+            _context.Orgao.Add(obj);
         }
 
         public void Dispose()
@@ -29,12 +29,11 @@ namespace BaseConhecimentoApi.Infra.Repository
 
         public void Remove(Guid id)
         {
-            throw new NotImplementedException();
         }
 
         public int SaveChanges()
         {
-            throw new NotImplementedException();
+            return _context.SaveChanges();
         }
 
         public void Update(Orgao obj)
