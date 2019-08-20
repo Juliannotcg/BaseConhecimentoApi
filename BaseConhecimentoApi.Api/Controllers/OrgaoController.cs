@@ -29,5 +29,11 @@ namespace BaseConhecimentoApi.Api.Controllers
             return _context.Orgao.ToList();
         }
 
+        [HttpPost]
+        public void Post([FromBody] Orgao orgao)
+        {
+            _orgaoRepository.Add(orgao);
+        }
+
     }
 }
