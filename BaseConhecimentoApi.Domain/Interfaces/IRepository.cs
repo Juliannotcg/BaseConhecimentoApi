@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace BaseConhecimentoApi.Domain.Interfaces
 {
@@ -6,7 +7,9 @@ namespace BaseConhecimentoApi.Domain.Interfaces
     {
         void Add(TEntity obj);
         void Update(TEntity obj);
-        void Remove(Guid id);
+        void Remove(int id);
+        TEntity GetById(Guid id);
+        IQueryable<TEntity> GetAll();
         int SaveChanges();
     }
 }

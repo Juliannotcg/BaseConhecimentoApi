@@ -3,6 +3,7 @@ using BaseConhecimentoApi.Infra.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BaseConhecimentoApi.Infra.Repository
@@ -22,9 +23,9 @@ namespace BaseConhecimentoApi.Infra.Repository
             DbSet.Add(obj);
         }
 
-        public void Remove(Guid id)
+        public void Remove(int id)
         {
-            throw new NotImplementedException();
+            DbSet.Remove(DbSet.Find(id));
         }
 
         public int SaveChanges()
@@ -41,6 +42,16 @@ namespace BaseConhecimentoApi.Infra.Repository
         {
             _context.Dispose();
             GC.SuppressFinalize(this);
+        }
+
+        public TEntity GetById(Guid id)
+        {
+            return DbSet.Find(id);
+        }
+
+        public IQueryable<TEntity> GetAll()
+        {
+            return DbSet;
         }
     }
 }
