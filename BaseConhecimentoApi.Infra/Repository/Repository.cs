@@ -35,7 +35,7 @@ namespace BaseConhecimentoApi.Infra.Repository
 
         public void Update(TEntity obj)
         {
-            throw new NotImplementedException();
+            DbSet.Update(obj);
         }
 
         public void Dispose()

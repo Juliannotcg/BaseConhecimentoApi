@@ -32,6 +32,10 @@ namespace BaseConhecimentoApi.Api.Controllers
         [HttpGet]
         public IEnumerable<OrgaoViewModel> GetAll()
         {
+
+            var resultado = _orgaoRepository.GetAll().ProjectTo<OrgaoViewModel>(_mapper.ConfigurationProvider);
+
+
             return _orgaoRepository.GetAll().ProjectTo<OrgaoViewModel>(_mapper.ConfigurationProvider);
         }
 
@@ -52,6 +56,19 @@ namespace BaseConhecimentoApi.Api.Controllers
         {
            
             _orgaoRepository.Remove(id);
+
+            if (_orgaoRepository.SaveChanges() > 0)
+            {
+
+            }
+        }
+
+        [HttpPut]
+        public void Update([FromBody] OrgaoViewModel orgaoViewModel)
+        {
+
+            var orgao = _mapper.Map<Orgao>(orgaoViewModel);
+            _orgaoRepository.Update(orgao);
 
             if (_orgaoRepository.SaveChanges() > 0)
             {
