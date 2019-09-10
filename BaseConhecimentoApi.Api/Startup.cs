@@ -7,11 +7,13 @@ using AutoMapper;
 using BaseConhecimentoApi.Api.Configurations;
 using BaseConhecimentoApi.Domain.Interfaces;
 using BaseConhecimentoApi.Infra.Context;
+using BaseConhecimentoApi.Infra.Identity.Data;
 using BaseConhecimentoApi.Infra.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -33,6 +35,12 @@ namespace BaseConhecimentoApi.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Contexto do EF para o Identity
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<EntityContext>(options =>
+               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddSwaggerGen(c =>
             {

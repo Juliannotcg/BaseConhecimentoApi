@@ -21,11 +21,11 @@ namespace BaseConhecimentoApi.Infra.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
+              .SetBasePath(Directory.GetCurrentDirectory())
+              .AddJsonFile("appsettings.json")
+              .Build();
 
-            optionsBuilder.UseSqlServer("Server=JULIANNO;Database=BaseConhecimento;User ID=sa;Password=garciajtc241188;");
+            optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
         }
     }
 }
