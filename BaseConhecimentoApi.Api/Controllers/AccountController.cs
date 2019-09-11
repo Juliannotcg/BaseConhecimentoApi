@@ -19,7 +19,7 @@ using BaseConhecimentoApi.Domain.Interfaces;
 
 namespace BaseConhecimentoApi.Api.Controllers
 {
-    public class AccountController : BaseController
+    public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -30,8 +30,7 @@ namespace BaseConhecimentoApi.Api.Controllers
                     UserManager<ApplicationUser> userManager,
                     SignInManager<ApplicationUser> signInManager,
                     ILoggerFactory loggerFactory,
-                    TokenDescriptor tokenDescriptor,
-                    IUser user)
+                    TokenDescriptor tokenDescriptor)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -60,9 +59,11 @@ namespace BaseConhecimentoApi.Api.Controllers
 
                 _logger.LogInformation(1, "Usuario criado com sucesso!");
                 var response = GerarTokenUsuario(new LoginViewModel { Email = model.Email, Senha = model.Senha });
+
+                return Ok(response.Result);
             }
 
-            return Response();
+            return Ok(model);
         }
 
         [HttpPost]
@@ -77,9 +78,9 @@ namespace BaseConhecimentoApi.Api.Controllers
             {
                 _logger.LogInformation(1, "Usuario logado com sucesso");
                 var response = GerarTokenUsuario(model);
-                return Response(response);
+                return Ok(response.Result);
             }
-            return Response(model);
+            return Ok(model);
         }
 
         private async Task<object> GerarTokenUsuario(LoginViewModel login)
@@ -103,7 +104,6 @@ namespace BaseConhecimentoApi.Api.Controllers
                 Issuer = _tokenDescriptor.Issuer,
                 Audience = _tokenDescriptor.Audience,
                 SigningCredentials = signingConf.SigningCredentials,
-                Subject = identityClaims,
                 NotBefore = DateTime.Now,
                 Expires = DateTime.Now.AddMinutes(_tokenDescriptor.MinutesValid)
             });

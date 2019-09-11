@@ -9,6 +9,10 @@ namespace BaseConhecimentoApi.Infra.Context
 {
     public class EntityContext : DbContext
     {
+        public EntityContext()
+        {
+
+        }
         public DbSet<Orgao> Orgao { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

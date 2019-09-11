@@ -8,11 +8,16 @@ using AutoMapper;
 using BaseConhecimentoApi.Api.Configurations;
 using BaseConhecimentoApi.Domain.Interfaces;
 using BaseConhecimentoApi.Infra.Context;
+using BaseConhecimentoApi.Infra.Identity.Authorization;
 using BaseConhecimentoApi.Infra.Identity.Data;
+using BaseConhecimentoApi.Infra.Identity.Models;
+using BaseConhecimentoApi.Infra.Identity.Services;
 using BaseConhecimentoApi.Infra.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -41,8 +46,29 @@ namespace BaseConhecimentoApi.Api
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                  x => x.MigrationsAssembly(typeof(ApplicationDbContext).GetTypeInfo().Assembly.GetName().Name)));
 
-            services.AddDbContext<EntityContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<EntityContext>(options =>
+            //   options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+         
+
+            services.AddScoped<EntityContext, EntityContext>();
+            services.AddTransient<IOrgaoRepository, OrgaoRepository>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // Infra - Identity
+            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>();
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = false;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
+            services.AddTransient<TokenDescriptor, TokenDescriptor>();
+            services.AddScoped<IUser, AspNetUser>();
 
             services.AddSwaggerGen(c =>
             {
@@ -72,8 +98,7 @@ namespace BaseConhecimentoApi.Api
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddAutoMapperSetup();
 
-            services.AddScoped<EntityContext, EntityContext>();
-            services.AddTransient<IOrgaoRepository, OrgaoRepository>();
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -89,6 +114,7 @@ namespace BaseConhecimentoApi.Api
 
             app.UseCors(option => option.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()); ;
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
 
 
