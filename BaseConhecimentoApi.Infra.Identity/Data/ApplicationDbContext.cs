@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Reflection;
 using BaseConhecimentoApi.Infra.Identity.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,9 @@ namespace BaseConhecimentoApi.Infra.Identity.Data
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+            optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"),
+                   x => x.MigrationsAssembly(typeof(ApplicationDbContext).GetTypeInfo().Assembly.GetName().Name));
+
         }
     }
 }

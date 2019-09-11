@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
 using BaseConhecimentoApi.Api.Configurations;
@@ -37,7 +38,8 @@ namespace BaseConhecimentoApi.Api
         {
             // Contexto do EF para o Identity
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                 x => x.MigrationsAssembly(typeof(ApplicationDbContext).GetTypeInfo().Assembly.GetName().Name)));
 
             services.AddDbContext<EntityContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
